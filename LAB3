@@ -1,0 +1,7 @@
+
+   Alter table Employees rename to EMP ;
+
+   insert into Department values(1,'HR','SA',39); 
+
+   Select * from Department ;
+   desc EMP ;
