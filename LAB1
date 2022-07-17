@@ -1,0 +1,11 @@
+
+Create Table CUSTOMER  (
+     CustID NUMBER (7) NOT NULL  , 
+     Fname VARCHAR2 (20) NOT NULL  ,
+     Lname varchar2 (20)  ,
+     address varchar2 (30 ) ,
+     City varchar2 (20) DEFAULT ' Madinah '  ,
+     Email varchar2 (30) ,
+     CONSTRAINT cust_id PRIMARY KEY (CustID) ,
+     CONSTRAINT cu_email UNIQUE (Email) 
+      );
