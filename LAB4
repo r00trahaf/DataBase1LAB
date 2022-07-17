@@ -1,0 +1,45 @@
+
+select* from OEHR_EMPLOYEES 
+ where first_name = 'Steven' ;
+ 
+select* from OEHR_EMPLOYEES 
+ where first_name = 'Steven' AND last_name = 'King' ;
+ 
+select first_name , last_name , job_ID , salary from OEHR_EMPLOYEES 
+ where salary >= 15000 AND salary <= 20000 
+ order by salary asc ; 
+ 
+select first_name , last_name , hire_date , salary from OEHR_EMPLOYEES 
+  where salary >= 1000 
+  order by salary desc , hire_date asc ;
+  
+select DISTINCT salary from OEHR_EMPLOYEES 
+ order by salary desc ;
+ 
+ select department_id from OEHR_Departments 
+ WHERE department_name = 'Accounting';
+ 
+select* from OEHR_EMPLOYEES , OEHR_Departments 
+ where Department_name = 'Accounting' ;
+ 
+select* from OEHR_EMPLOYEES 
+ where department_id = 110 ;
+ 
+select first_name , last_name , hire_date , salary , job_id , commission_pct from OEHR_EMPLOYEES
+ where commission_pct IS NOT NULL ; 
+ 
+select first_name , last_name , hire_date , salary , job_id , commission_pct from OEHR_EMPLOYEES
+ where commission_pct IS  NULL ;
+ 
+select  first_name , last_name , salary , job_id ,department_id from OEHR_EMPLOYEES    
+ where  job_id NOT IN ('FI_MGR', 'AD_PRES', 'SA_MAN', 'AC_MGR') ;
+ 
+ select * from OEHR_EMPLOYEES ,  OEHR_Departments   
+WHERE (department_name = 'Accounting' or department_name ='Executive');
+
+select first_name , last_name , salary , job_id from OEHR_EMPLOYEES
+where first_name like 'D%'and first_name like '%d' ;
+
+select D.department_name , D.department_id , count(*) from OEHR_EMPLOYEES E , OEHR_Departments D
+where D.department_id = E.department_id 
+GROUP BY  D.department_id , D.department_name ;
