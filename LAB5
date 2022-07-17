@@ -1,0 +1,114 @@
+* How many departments are in the organization? */
+
+select count(department_ID)
+from oehr_departments ;
+
+/* How many departments in the organization have employees? */
+
+select *
+from oehr_employees
+where department_ID is null;
+
+select count(distinct department_ID)
+from oehr_employees ;
+
+/* Find the number of employees in each department.*/
+--does not count NULL values
+
+select department_id, count(*)
+from oehr_employees
+group by department_id;
+
+/* How many employees are employed in Sales Department*/ 
+-- sales department is 80
+--select * from oehr_departments
+
+SELECT COUNT(*)
+FROM oehr_employees
+WHERE department_id = (select department_id
+from oehr_departments
+where department_name= 'Sales');
+
+SELECT COUNT(*)
+FROM oehr_employees, oehr_departments
+WHERE oehr_employees.department_id= oehr_departments.department_id
+AND department_name= 'Sales';
+
+/* Find the average salary, the maximum salary, the minimum salary, and the sum of the paid salaries in the organization of all employees.*/
+
+SELECT AVG(salary), MAX(salary), MIN(salary), SUM(salary)
+FROM oehr_employees;
+
+/* For each department, retrieve the department name and the average salary and the highest salary paid to the employees in that department . 
+Sort the result based on the department name alphabetically..*/
+-- the order is by default
+
+select department_name, AVG(Salary), max(salary)
+from oehr_employees , oehr_departments
+where oehr_employees.department_id= oehr_departments.department_id
+group by department_name
+order by department_name;
+
+/* Find the average salary, the maximum salary, the minimum salary, and the total of paid salaries in the organization for the employees
+who work as representatives ( HINT: job_id : MK_REP, HR_REP, PR_REP) */
+
+SELECT AVG(salary), MAX(salary), MIN(salary), SUM(salary)
+FROM oehr_employees
+WHERE job_id LIKE '%REP%';
+
+/*Find the earliest hired employee(s) and the most recently hired employee(s) in the organization.*/
+
+SELECT *
+FROM oehr_employees e
+WHERE hire_date = ( SELECT max(hire_date) FROM oehr_employees) or
+hire_date = ( SELECT min(hire_date) FROM oehr_employees) ;
+
+--another solution (presented as no1)
+
+SELECT max(hire_date),min(hire_date)
+FROM oehr_employees e
+
+/*Find the highest salary paid in each department for those departments in which the highest-paid salary is more than 10000. */
+
+SELECT department_id, MAX(salary)
+FROM oehr_employees
+GROUP BY department_id
+HAVING MAX(salary)>10000 ;
+
+/*Which department has the highest average salary?*/
+
+SELECT department_id, AVG(salary)
+FROM oehr_employees
+GROUP BY department_id
+having avg(salary) = (SELECT max(AVG(salary))
+FROM oehr_employees
+GROUP BY department_id);
+
+/*Retrieve the Full name of the employee along with the full name of his/her manager*/
+-- maybe not too much
+--select * from oehr_employees
+
+select E.first_name || ' ' || E.Last_name AS "Employee Full Name" , 
+M.first_name || ' ' || M.last_name AS "Manger Full Name"
+from oehr_employees E, oehr_employees M
+where E.manager_id = M.employee_id;
+
+/* For each job position in the organization, retrieve the job title
+and the number of employees working in that job. Order the result by
+the job title in descending order. */
+
+select job_title, count(*)
+from OEHR_EMPLOYEES, OEHR_JOBS
+where OEHR_EMPLOYEES.job_id = OEHR_JOBS.job_id
+group by job_title
+order by job_title desc;
+
+/*Retrive the deaprtment name and number of employees for the departm
+ent that has the highest number of worker */
+
+select department_name, count(*)
+from OEHR_EMPLOYEES, OEHR_DEPARTMENTS
+where OEHR_EMPLOYEES.department_id = OEHR_DEPARTMENTS.department_id
+group by department_name
+having count(*) = (select max(count(*)) from OEHR_EMPLOYEES group by
+department_id)
